@@ -10,18 +10,43 @@ Para cada entrada, deve-se apresentar a mensagem “Cidade# n:”, onde n é o n
 */
 
 #include <iostream>
+#include <algorithm>
+#include <vector>
+#include <cmath>
+#include <iomanip>
+#include <map>
 
 using namespace std;
 
 void solver(int n){
-    vector<pair<int,int>> v;
+//    vector<pair<int,int>> v;
+    map<int,int> map;
+
+    int avg = 0;
+    int numPeople = 0;
     for(int i = 0;i<n;i++){
         int aux,aux1;
         cin >> aux >> aux1;
-        v.push_back(make_pair(aux,aux1));
+//        v.push_back(make_pair(aux,aux1));
+        
+        int avgAux = floor(aux1/(aux*1.0));
+        if(map[avgAux] == 0){
+            map[avgAux] = aux;
+        }else map[avgAux]+=aux;
+        
+        avg+=aux1;
+        numPeople+=aux;
     }
     
+    int i = map.size();
+    for(auto & home:map){
+        cout << home.second << "-" << home.first;
+        if(i == 1) cout << "\n";
+        else cout << " ";
+        i--;
+    }
     
+    cout << "Consumo medio: " <<  fixed << setprecision(2) << floor(100*(float)avg/numPeople)/100 << " m3.\n";
 }
 
 int main(){
@@ -30,10 +55,13 @@ int main(){
     while(true){
         cin >> N;   
         if(!N) break;
+
         cout << "Cidade# " << city << ":\n";
         
         solver(N);
         city++;
+        if(N > 0) cout << "\n";
+
     }    
     return 0;
 }
